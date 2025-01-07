@@ -1,13 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const connectDB = require("./config/dbConfig");
+const userRoute = require("./routes/userRoute");
 
 const app = express();
 dotenv.config();
 connectDB();
 
-const PORT = 3120;      //PORT for running the server
+app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 3120;      //PORT for running the server
+
+
+app.use('/auth', userRoute);
 
 //          Home route to check if the sevrer is up nd running
 app.get('/', (req, res) => {
