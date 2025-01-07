@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 const UserModel = require("../models/user.schema");
+const QuizModel = require("../models/quiz.schema");
 
 dotenv.config();
 
@@ -51,7 +52,28 @@ const loginUser = async (email, password) => {
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
     return token;
+}; 
+
+const createQuiz = async (data) => {
+    const { categoryName, subjectName, description, imgUrl, quizQuesOpt } = data;
+
+    const isSubjectExist = await QuizModel.findOne({ subjectName });
+
+    if(isSubjectExist) {
+        const error = new Error("This subject already exist");
+        error.status = 400;
+        throw error;  
+    };
+
+    const result = await QuizModel.create({
+        categoryName,
+        subjectName,
+        description, 
+        imgUrl, 
+        quizQuesOpt
+    });
+
+    return result;
 };
 
-
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, createQuiz };

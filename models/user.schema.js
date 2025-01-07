@@ -17,10 +17,6 @@ const userSchema = new mongoose.Schema({
     ScoreId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Score"   
-    },
-    subjectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Quiz"
     }
 });
 
