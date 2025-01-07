@@ -1,5 +1,9 @@
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const dotenv = require("dotenv");
 const UserModel = require("../models/user.schema");
+
+dotenv.config();
 
 const registerUser = async (name, email, password) => {
     const isUserExist = await UserModel.findOne({ email });
@@ -21,6 +25,33 @@ const registerUser = async (name, email, password) => {
     });
         
     return newUser;            // Return created user object
-}
+};
 
-module.exports = { registerUser };
+const loginUser = async (email, password) => {
+    const isUserValid = await UserModel.findOne({ email });
+
+    if(!isUserValid) {
+        const error = new Error("This email is not associated with any account");
+        error.status = 400;
+        throw error;
+    };
+
+    const isPasswordValid = bcrypt.compare(password, isUserValid.password);
+
+    if(!isPasswordValid) {
+        const error = new Error("Credential is wrong");
+        error.status = 400;
+        throw error;
+    };
+
+    //   Set the mongodb user id as payload 
+    const payload = {
+        id: isUserValid._id
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    return token;
+};
+
+
+module.exports = { registerUser, loginUser };

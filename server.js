@@ -19,7 +19,7 @@ app.use('/auth', userRoute);
 
 //          Home route to check if the sevrer is up nd running
 app.get('/', (req, res) => {
-    res.send(200).json({ message: "Quiz Hub Backend Server" });
+    res.send("Quiz Hub Server Established");
 });
 
 //          wait for the db connection before starting the server
