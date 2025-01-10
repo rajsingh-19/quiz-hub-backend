@@ -37,7 +37,7 @@ const loginUser = async (email, password) => {
         throw error;
     };
 
-    const isPasswordValid = bcrypt.compare(password, isUserValid.password);
+    const isPasswordValid = await bcrypt.compare(password, isUserValid.password);
 
     if(!isPasswordValid) {
         const error = new Error("Credential is wrong");
@@ -76,4 +76,16 @@ const createQuiz = async (data) => {
     return result;
 };
 
-module.exports = { registerUser, loginUser, createQuiz };
+const getAllQuizzes = async () => {
+    const quizzes = await QuizModel.find();
+
+    if(!quizzes || quizzes.length === 0) {
+        const error = new Error("Quizzes not found");
+        error.status = 400;
+        throw error;
+    };
+
+    return quizzes;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes };

@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const { registerUser, loginUser } = require("../services/services");
+const { registerUser, loginUser } = require("../services/index");
 
 dotenv.config();
 
