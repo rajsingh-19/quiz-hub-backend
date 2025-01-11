@@ -28,7 +28,16 @@ const allQuizzesHandler = async (req, res) => {
     try {
         const quizzes = await getAllQuizzes();
 
-        return res.status(200).json({ message: "All quizzes has fetched", quizzes });
+        // Extract the required field to send to the front end
+        const filteredQuizzes = quizzes.map((quiz) => ({
+            categoryName: quiz.categoryName,
+            subjectName: quiz.subjectName,
+            imgUrl: quiz.imgUrl,
+            description: quiz.description,
+            _id: quiz._id
+        }));
+
+        return res.status(200).json({ message: "All quizzes has fetched", filteredQuizzes });
     } catch (error) {
         console.error(error);
         
@@ -47,7 +56,17 @@ const getSubsByCatHandler = async (req, res) => {
     try {
         const subjects = await getSubByCategory(category);
 
-        return res.status(200).json({ message: "Filtered Subjects are fetched", subjects });
+        // Extract only required fileds to send to the fornt end
+        const filteredQuizzes = subjects.map((quiz) => ({
+            categoryName: quiz.categoryName,
+            subjectName: quiz.subjectName,
+            description: quiz.description,
+            imgUrl: quiz.imgUrl,
+            _id: quiz._id
+        }));
+
+
+        return res.status(200).json({ message: "Filtered Subjects are fetched", filteredQuizzes });
     } catch (error) {
         console.error(error);
 
