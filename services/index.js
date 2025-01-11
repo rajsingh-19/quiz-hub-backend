@@ -107,4 +107,17 @@ const getSubByCategory = async (category) => {
     return filteredSubjects;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory };
+//     api for subject by its id
+const getSubById = async (id) => {
+    const filteredSubject = await QuizModel.findOne({ _id: id });
+
+    if(!filteredSubject) {
+        const error = new Error("This subject is not available");
+        error.status = 400;
+        throw error;
+    };
+
+    return filteredSubject;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById };
