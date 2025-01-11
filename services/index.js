@@ -6,6 +6,7 @@ const QuizModel = require("../models/quiz.schema");
 
 dotenv.config();
 
+//      api service for user register 
 const registerUser = async (name, email, password) => {
     const isUserExist = await UserModel.findOne({ email });
 
@@ -28,6 +29,7 @@ const registerUser = async (name, email, password) => {
     return newUser;            // Return created user object
 };
 
+//      api service for user login
 const loginUser = async (email, password) => {
     const isUserValid = await UserModel.findOne({ email });
 
@@ -54,6 +56,7 @@ const loginUser = async (email, password) => {
     return token;
 }; 
 
+//      api service for quiz creation 
 const createQuiz = async (data) => {
     const { categoryName, subjectName, description, imgUrl, quizQuesOpt } = data;
 
@@ -76,6 +79,8 @@ const createQuiz = async (data) => {
     return result;
 };
 
+
+//  api for geting all the subject quizzes
 const getAllQuizzes = async () => {
     const quizzes = await QuizModel.find();
 
@@ -88,4 +93,18 @@ const getAllQuizzes = async () => {
     return quizzes;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes };
+
+//  api for subject quizzes by category name
+const getSubByCategory = async (category) => {
+    const filteredSubjects = await QuizModel.find({ categoryName: category });
+
+    if(!filteredSubjects) {
+        const error = new Error("This category is not available");
+        error.status = 400;
+        throw error;
+    };
+
+    return filteredSubjects;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory };

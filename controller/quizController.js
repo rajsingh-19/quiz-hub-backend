@@ -1,4 +1,4 @@
-const { createQuiz, getAllQuizzes } = require("../services/index");
+const { createQuiz, getAllQuizzes, getSubByCategory } = require("../services/index");
 
 const createQuizHandler = async (req, res) => {
     const { categoryName, subjectName, description, imgUrl, quizQuesOpt } = req.body;
@@ -40,4 +40,23 @@ const allQuizzesHandler = async (req, res) => {
     }
 };
 
-module.exports =  { createQuizHandler, allQuizzesHandler };
+//     subject by category handler
+const getSubsByCatHandler = async (req, res) => {
+    const { category } = req.query;
+
+    try {
+        const subjects = await getSubByCategory(category);
+
+        return res.status(200).json({ message: "Filtered Subjects are fetched", subjects });
+    } catch (error) {
+        console.error(error);
+
+        if(error.status) {
+            return res.status(error.status).json({ message: error.message });
+        };
+
+        return res.status(500).json({ message: "An Error Occured" });
+    }
+};
+
+module.exports =  { createQuizHandler, allQuizzesHandler, getSubsByCatHandler };
