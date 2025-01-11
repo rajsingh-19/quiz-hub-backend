@@ -85,7 +85,10 @@ const getSubByIdHandler = async (req, res) => {
     try {
         const subjectQuiz = await getSubById(id);
 
-        return res.status(200).json({ message: "Subject has been fetched", subjectQuiz });
+        const quesAns = subjectQuiz.quizQuesOpt;
+        const subject = subjectQuiz.subjectName;
+
+        return res.status(200).json({ message: "Subject has been fetched", quesAns, subject });
     } catch (error) {
         console.error(error);
 
