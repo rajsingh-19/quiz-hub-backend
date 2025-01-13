@@ -4,11 +4,11 @@ dotenv.config();
 
 const verifyUser = async (req, res, next) => {
     // Get the token from the cookies or req.header.authorization
-    const token = res.headers.authorization;
+    const token = req.headers.authorization  && req.headers.authorization.split(" ")[1];;
     
     // Check if the token is present or not
     if (!token) {
-        return res.json({status: false, message: "Authentication failed"});
+        return res.status(401).json({ message: "Authentication failed"});
     };
 
     try {
