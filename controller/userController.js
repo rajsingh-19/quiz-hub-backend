@@ -28,7 +28,7 @@ const loginHandler = async (req, res) => {
     try {
         const result = await loginUser(email, password);
 
-        return res.status(200).json({ message: "Logged in Successfully", token: result });
+        return res.status(200).json({ message: "Logged in Successfully", result });
     } catch (error) {
         console.error(error);
         

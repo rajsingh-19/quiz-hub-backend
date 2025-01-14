@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
 const UserModel = require("../models/user.schema");
 const QuizModel = require("../models/quiz.schema");
+const ScoreModel = require("../models/score.schema");
 
 dotenv.config();
 
@@ -53,7 +54,7 @@ const loginUser = async (email, password) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
-    return token;
+    return { token, userId: isUserValid._id };
 }; 
 
 //      api service for quiz creation 
@@ -120,4 +121,19 @@ const getSubById = async (id) => {
     return filteredSubject;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById };
+//    api for creating score
+const createScore = async (scoreDetails) => {
+    const { quizId, userId, score, rightAns, wrongAns } = scoreDetails;
+
+    const result = await ScoreModel.create({
+        quizId,
+        userId,
+        score,
+        rightAns,
+        wrongAns
+    });
+
+    return result;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore };
