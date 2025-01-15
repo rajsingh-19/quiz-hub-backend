@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv");
@@ -5,6 +6,7 @@ const UserModel = require("../models/user.schema");
 const QuizModel = require("../models/quiz.schema");
 const ScoreModel = require("../models/score.schema");
 
+const { ObjectId } = mongoose.Types;
 dotenv.config();
 
 //      api service for user register 
@@ -164,4 +166,18 @@ const getScoreByQuizId = async (quizId) => {
     return result;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore, getScore, updateScore, getScoreByQuizId };
+//      api for geting all the scores using sub id
+const getAllScores = async (subId) => {
+    const result = await ScoreModel.find({ subId })
+        .populate('userId', 'name') // Populating the 'userId' field with the 'name' field from the 'User' model
+
+    if(result.length === 0) {
+        const error = new Error("This subject's scores are not available");
+        error.status = 404;
+        throw error;
+    };
+
+    return result;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore, getScore, updateScore, getScoreByQuizId, getAllScores };

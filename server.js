@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 3120;      //PORT for running the server
 app.use('/auth', userRoute);
 app.use('/api', quizRoute);
 app.use('/api/score', scoreRoute);
+app.use('/api/scores', scoreRoute);
 
 //          Home route to check if the sevrer is up nd running
 app.get('/', (req, res) => {

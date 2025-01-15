@@ -1,5 +1,6 @@
-const { createScore, getScore, updateScore, getScoreByQuizId } = require("../services/index");
+const { createScore, getScore, updateScore, getScoreByQuizId, getAllScores } = require("../services/index");
 
+//  create score handler
 const scoreHandler = async (req, res) => {
     const { subId } = req.params;
     const { userId, score, rightAns, wrongAns } = req.body;
@@ -39,11 +40,12 @@ const scoreHandler = async (req, res) => {
     }
 };
 
+//      geting score by quiz id handler
 const getScoreByQuizIdHandler = async (req, res) => {
     const { quizId } = req.params;
 
     if(!quizId) {
-        return res.status(400).json({ message: "User Id is required" });
+        return res.status(400).json({ message: "Quiz Id is required" });
     };
      
     try {
@@ -61,4 +63,27 @@ const getScoreByQuizIdHandler = async (req, res) => {
     }
 };
 
-module.exports = { scoreHandler, getScoreByQuizIdHandler };
+//  All Scores handler
+const getAllScoresHandler = async (req, res) => {
+    const { subId } = req.params;
+
+    if(!subId) {
+        return res.status(400).json({ message: "Subject Id is required" });
+    };
+
+    try {
+        const result = await getAllScores(subId);
+
+        return res.status(200).json({ message: "All Scores are fetched", result });
+    } catch (error) {
+        console.error(error);
+
+        if(error.status) {
+            return res.status(error.status).json({ message: error.message });
+        };
+
+        return res.status(500).json({ message: "An Error Occured" });
+    }
+};
+
+module.exports = { scoreHandler, getScoreByQuizIdHandler, getAllScoresHandler };
