@@ -121,12 +121,26 @@ const getSubById = async (id) => {
     return filteredSubject;
 };
 
+//    api for sub score updation
+const updateScore = async (scoreId, scoreDetails) => {
+    const { score, rightAns, wrongAns } = scoreDetails;
+
+    const result = await ScoreModel.findByIdAndUpdate(scoreId, {
+        score,
+        rightAns,
+        wrongAns
+    },
+    { new: true });             // Return the updated document
+
+    return result;
+};
+
 //    api for creating score
 const createScore = async (scoreDetails) => {
-    const { quizId, userId, score, rightAns, wrongAns } = scoreDetails;
+    const { subId, userId, score, rightAns, wrongAns } = scoreDetails;
 
     const result = await ScoreModel.create({
-        quizId,
+        subId,
         userId,
         score,
         rightAns,
@@ -136,4 +150,11 @@ const createScore = async (scoreDetails) => {
     return result;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore };
+//          api for get user score by user id
+const getScore = async (subId, userId) => {
+    const result = await ScoreModel.findOne({ subId, userId });
+
+    return result;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore, getScore, updateScore };

@@ -9,7 +9,7 @@ const scoreSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    quizId: {
+    subId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Quiz"
     },
