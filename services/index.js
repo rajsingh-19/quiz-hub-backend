@@ -150,11 +150,18 @@ const createScore = async (scoreDetails) => {
     return result;
 };
 
-//          api for get user score by user id
+//          api for get score by sub and user id
 const getScore = async (subId, userId) => {
     const result = await ScoreModel.findOne({ subId, userId });
 
     return result;
 };
 
-module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore, getScore, updateScore };
+//          api for get the quiz data by quiz id
+const getScoreByQuizId = async (quizId) => {
+    const result = await ScoreModel.findOne({ _id: quizId });
+
+    return result;
+};
+
+module.exports = { registerUser, loginUser, createQuiz, getAllQuizzes, getSubByCategory, getSubById, createScore, getScore, updateScore, getScoreByQuizId };

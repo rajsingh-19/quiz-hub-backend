@@ -1,4 +1,4 @@
-const { createScore, getScore, updateScore } = require("../services/index");
+const { createScore, getScore, updateScore, getScoreByQuizId } = require("../services/index");
 
 const scoreHandler = async (req, res) => {
     const { subId } = req.params;
@@ -39,15 +39,15 @@ const scoreHandler = async (req, res) => {
     }
 };
 
-const getScoreHandler = async (req, res) => {
-    const { userId } = req.params;
+const getScoreByQuizIdHandler = async (req, res) => {
+    const { quizId } = req.params;
 
-    if(userId) {
+    if(!quizId) {
         return res.status(400).json({ message: "User Id is required" });
     };
      
     try {
-        const result = await getScore(userId);
+        const result = await getScoreByQuizId(quizId);
 
         return res.status(200).json({ message: "Score fetched", result });
     } catch(error) {
@@ -61,4 +61,4 @@ const getScoreHandler = async (req, res) => {
     }
 };
 
-module.exports = { scoreHandler, getScoreHandler };
+module.exports = { scoreHandler, getScoreByQuizIdHandler };
