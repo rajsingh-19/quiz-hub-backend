@@ -9,7 +9,7 @@ const scoreHandler = async (req, res) => {
         return res.status(400).json({ message: "Subject id is not available"});
     };
 
-    if(!userId || !score || !rightAns || !wrongAns ) {
+    if(!userId) {
         return res.status(400).json({ message: "All fields are required" });
     };
 
